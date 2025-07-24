@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component jdk="JavaSE-1.8" jdk_type="JavaSDK">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="hamcrest-core-1.1.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/../common_new/DelicacyCommonLib/current/obs/hamcrest-core-1.1.jar!/"/>
+	</lib>
+</component>

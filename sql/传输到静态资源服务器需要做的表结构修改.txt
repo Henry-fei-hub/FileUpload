@@ -1,0 +1,64 @@
+DROP TABLE IF EXISTS static_resource_transfers;
+CREATE TABLE static_resource_transfers (
+  static_resource_transfer_id serial PRIMARY KEY NOT NULL,
+  file_id int4,
+  file_name varchar(255),
+  file_size int8,
+  file_extension varchar(64),
+  transfer_key varchar(255),
+  relative_file_path varchar(1024),
+  absolute_file_path varchar(1024),
+  create_time timestamp(6) DEFAULT now(),
+  transfer_type int4,
+  status int4,
+  begin_time timestamp(6),
+  end_time timestamp(6),
+  remark varchar(1024),
+  delete_flag int4 DEFAULT 0
+)
+;
+ALTER TABLE static_resource_transfers 
+  OWNER TO postgres;
+COMMENT ON COLUMN static_resource_transfers.static_resource_transfer_id IS '主键';
+COMMENT ON COLUMN static_resource_transfers.file_id IS '文件ID';
+COMMENT ON COLUMN static_resource_transfers.file_name IS '文件名称';
+COMMENT ON COLUMN static_resource_transfers.file_size IS '文件大小';
+COMMENT ON COLUMN static_resource_transfers.file_extension IS '文件后缀';
+COMMENT ON COLUMN static_resource_transfers.transfer_key IS '关联file_transfer_progresses表';
+COMMENT ON COLUMN static_resource_transfers.relative_file_path IS '相对路径';
+COMMENT ON COLUMN static_resource_transfers.absolute_file_path IS '绝对路径';
+COMMENT ON COLUMN static_resource_transfers.create_time IS '创建时间';
+COMMENT ON COLUMN static_resource_transfers.transfer_type IS '传输类型 1:下载 2:上传';
+COMMENT ON COLUMN static_resource_transfers.status IS '状态 1:新建 2:处理中 3:处理完成 4:失败 5:作废';
+COMMENT ON COLUMN static_resource_transfers.begin_time IS '开始时间';
+COMMENT ON COLUMN static_resource_transfers.end_time IS '结束时间';
+COMMENT ON COLUMN static_resource_transfers.remark IS '备注';
+COMMENT ON COLUMN static_resource_transfers.delete_flag IS '删除标志 0:未删除 1:已删除';
+
+ALTER TABLE "public"."file_manages" 
+  DROP COLUMN "transfer_to_static_server",
+  ADD COLUMN "file_transfer_key" varchar(255),
+  ADD COLUMN "file_transfer_status" int4 DEFAULT 1,
+  ADD COLUMN "icon_img_transfer_key" varchar(255),
+  ADD COLUMN "icon_img_transfer_status" int4 DEFAULT 1,
+  ADD COLUMN "thumbnail_img_transfer_key" varchar(255),
+  ADD COLUMN "thumbnail_img_transfer_status" int4 DEFAULT 1,
+  ADD COLUMN "matrix_img_transfer_key" varchar(255),
+  ADD COLUMN "matrix_img_transfer_status" int4 DEFAULT 1,
+  ADD COLUMN "standard_img_transfer_key" varchar(255) DEFAULT 1,
+  ADD COLUMN "standard_img_transfer_status" int4 DEFAULT 1,
+  ADD COLUMN "video_image_transfer_key" varchar(255),
+  ADD COLUMN "video_image_transfer_status" int4 DEFAULT 1;
+
+COMMENT ON COLUMN "public"."file_manages"."file_transfer_key" IS '主文件传输key值';
+COMMENT ON COLUMN "public"."file_manages"."file_transfer_status" IS '主文件传输状态 1:未传输; 2:传输中; 3:传输完成; 4:传输失败; 5:作废';
+COMMENT ON COLUMN "public"."file_manages"."icon_img_transfer_key" IS '图标传输key值';
+COMMENT ON COLUMN "public"."file_manages"."icon_img_transfer_status" IS '图标传输状态 1:未传输; 2:传输中; 3:传输完成; 4:传输失败; 5:作废';
+COMMENT ON COLUMN "public"."file_manages"."thumbnail_img_transfer_key" IS '缩略图传输key值';
+COMMENT ON COLUMN "public"."file_manages"."thumbnail_img_transfer_status" IS '缩略图传输状态 1:未传输; 2:传输中; 3:传输完成; 4:传输失败; 5:作废';
+COMMENT ON COLUMN "public"."file_manages"."matrix_img_transfer_key" IS '矩阵图传输key值';
+COMMENT ON COLUMN "public"."file_manages"."matrix_img_transfer_status" IS '矩阵图传输状态 1:未传输; 2:传输中; 3:传输完成; 4:传输失败; 5:作废';
+COMMENT ON COLUMN "public"."file_manages"."standard_img_transfer_key" IS '标准图传输key值';
+COMMENT ON COLUMN "public"."file_manages"."standard_img_transfer_status" IS '标准图传输状态 1:未传输; 2:传输中; 3:传输完成; 4:传输失败; 5:作废';
+COMMENT ON COLUMN "public"."file_manages"."video_image_transfer_key" IS '视频截图图片传输key值';
+COMMENT ON COLUMN "public"."file_manages"."video_image_transfer_status" IS '视频截图图片传输状态 1:未传输; 2:传输中; 3:传输完成; 4:传输失败; 5:作废';
